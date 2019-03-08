@@ -8,9 +8,14 @@ package typetrainer;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JCheckBox;
+import org.ini4j.Ini;
 
 /**
  *
@@ -23,6 +28,14 @@ public class TypeTrainer extends javax.swing.JFrame {
      */
     public TypeTrainer() {
         initComponents();
+        
+        Ini ini;
+        try {
+            ini = new Ini(new File("typeTrainer.ini"));
+            jTextField1.setText(ini.get("userParams", "chars"));
+        } catch (IOException ex) {
+            Logger.getLogger(TypeTrainer.class.getName()).log(Level.SEVERE, null, ex);
+        }        
                 
         checkBoxList = new ArrayList(); 
         checkBoxList.add(jCheckBox2);
@@ -102,6 +115,14 @@ public class TypeTrainer extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 formKeyReleased(evt);
@@ -175,19 +196,15 @@ public class TypeTrainer extends javax.swing.JFrame {
                         .addGap(26, 26, 26))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jCheckBox2)
-                                    .addComponent(jCheckBox3)
-                                    .addComponent(jCheckBox4)
-                                    .addComponent(jCheckBox5)
-                                    .addComponent(jCheckBox6)
-                                    .addComponent(jCheckBox7))
-                                .addGap(349, 349, 349))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jCheckBox15)
-                                .addGap(351, 351, 351))
+                            .addComponent(jCheckBox2)
+                            .addComponent(jCheckBox3)
+                            .addComponent(jCheckBox4)
+                            .addComponent(jCheckBox5)
+                            .addComponent(jCheckBox6)
+                            .addComponent(jCheckBox7)
+                            .addComponent(jCheckBox15)
                             .addComponent(jCheckBox8))
+                        .addGap(349, 349, 349)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jCheckBox9)
@@ -393,6 +410,21 @@ public class TypeTrainer extends javax.swing.JFrame {
             jTextField2.setText(currentStr);
         }
     }//GEN-LAST:event_jTextField3KeyTyped
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+
+    }//GEN-LAST:event_formWindowClosed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        Ini ini;
+        try {
+            ini = new Ini(new File("typeTrainer.ini"));
+            ini.put("userParams", "chars",jTextField1.getText());
+            ini.store();
+        } catch (IOException ex) {
+            Logger.getLogger(TypeTrainer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
